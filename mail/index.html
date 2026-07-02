@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Runlevel Labs - Mail Security</title>
+  <meta name="description" content="Statisches Mail Security Analyse Tool für SPF, DKIM, DMARC und MX Records.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="mail-header">
+    <nav class="top-nav" aria-label="Navigation">
+      <a href="../index.html">Tools</a>
+      <span>Mail Security</span>
+    </nav>
+    <div class="header-grid">
+      <div>
+        <p class="eyebrow">Runlevel Labs</p>
+        <h1>Mail Security</h1>
+        <p class="sub">Domain-basierte Analyse für MX, SPF und DMARC direkt im Browser.</p>
+      </div>
+      <div class="signal-panel" aria-label="Resolver Status">
+        <span class="signal-dot" aria-hidden="true"></span>
+        <strong>Resolver</strong>
+        <span>Google DNS-over-HTTPS</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="mail-shell">
+    <section class="panel query-panel" aria-labelledby="query-title">
+      <div>
+        <h2 id="query-title">Domain prüfen</h2>
+        <p>Domain eingeben und Mail-relevante DNS Records auswerten.</p>
+      </div>
+
+      <form id="mail-form" class="mail-form">
+        <label>
+          <span>Domain</span>
+          <input id="domain-input" name="domain" type="text" inputmode="url" autocomplete="off" placeholder="example.com" required>
+        </label>
+        <button id="mail-check-button" type="submit">Mail Check starten</button>
+      </form>
+    </section>
+
+    <section class="panel status-panel" aria-labelledby="status-title">
+      <div class="panel-head">
+        <div>
+          <h2 id="status-title">Status</h2>
+          <p id="status-text">Bereit für die erste Abfrage.</p>
+        </div>
+        <span id="status-badge" class="badge">idle</span>
+      </div>
+      <dl class="meta-list">
+        <div>
+          <dt>MX</dt>
+          <dd id="mx-status">nicht geprüft</dd>
+        </div>
+        <div>
+          <dt>SPF</dt>
+          <dd id="spf-status">nicht geprüft</dd>
+        </div>
+        <div>
+          <dt>DMARC</dt>
+          <dd id="dmarc-status">nicht geprüft</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="panel mx-panel" aria-labelledby="mx-title">
+      <h2 id="mx-title">MX Records</h2>
+      <ul id="mx-records" class="record-list">
+        <li class="empty">Noch keine Daten.</li>
+      </ul>
+    </section>
+
+    <section class="panel spf-panel" aria-labelledby="spf-title">
+      <h2 id="spf-title">SPF Record</h2>
+      <pre id="spf-record">Noch keine Antwort.</pre>
+    </section>
+
+    <section class="panel dmarc-panel" aria-labelledby="dmarc-title">
+      <h2 id="dmarc-title">DMARC Record</h2>
+      <pre id="dmarc-record">Noch keine Antwort.</pre>
+    </section>
+
+    <section class="panel raw-panel" aria-labelledby="raw-title">
+      <details class="raw-details">
+        <summary>
+          <span id="raw-title">Rohdaten</span>
+          <span class="raw-details__hint">anzeigen</span>
+        </summary>
+        <pre id="raw-output">Noch keine Antwort.</pre>
+      </details>
+    </section>
+  </main>
+
+  <footer class="mail-footer">
+    <small class="footer-copy">&copy; 2026 Tom &amp; Gina &middot; Runlevel Labs</small>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

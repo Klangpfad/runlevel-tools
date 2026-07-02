@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Runlevel Labs - Wetter</title>
+  <meta name="description" content="Statisches Wetter Tool für Runlevel Labs mit Open-Meteo Daten.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="weather-header">
+    <nav class="top-nav" aria-label="Navigation">
+      <a href="../index.html">Tools</a>
+      <span>Wetter</span>
+    </nav>
+    <div class="header-grid">
+      <div>
+        <p class="eyebrow">Runlevel Labs</p>
+        <h1>Wetter</h1>
+        <p class="sub">Aktuelle Wetterdaten und 7-Tage-Vorschau, statisch im Browser.</p>
+      </div>
+      <div class="signal-panel" aria-label="API Status">
+        <span id="signal-dot" class="signal-dot" aria-hidden="true"></span>
+        <strong>Status</strong>
+        <span id="status-text">bereit</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="weather-shell">
+    <section class="panel query-panel" aria-labelledby="query-title">
+      <div class="panel-head">
+        <div>
+          <h2 id="query-title">Ort</h2>
+          <p>Wetterdaten werden über Open-Meteo geladen. Kein Login, kein API-Key.</p>
+        </div>
+        <span id="status-badge" class="badge">idle</span>
+      </div>
+
+      <form id="weather-form" class="weather-form">
+        <label>
+          <span>Standort</span>
+          <input id="location-input" name="location" type="text" autocomplete="off" placeholder="Wuppertal" value="Wuppertal" required>
+        </label>
+        <button type="submit">Wetter laden</button>
+      </form>
+
+      <div class="quick-actions" aria-label="Schnellwahl">
+        <button type="button" data-location="Wuppertal">Wuppertal</button>
+        <button type="button" data-location="Berlin">Berlin</button>
+        <button type="button" data-location="Hamburg">Hamburg</button>
+      </div>
+    </section>
+
+    <section class="panel forecast-panel" aria-labelledby="forecast-title">
+      <h2 id="forecast-title">7 Tage Vorschau</h2>
+      <div class="forecast-list" id="forecast-list">
+        <p class="empty">Noch keine Vorschau geladen.</p>
+      </div>
+    </section>
+
+    <section class="panel current-panel" aria-labelledby="current-title">
+      <h2 id="current-title">Aktuell</h2>
+      <div class="current-weather">
+        <output id="temperature" class="temperature">-- °C</output>
+        <div>
+          <strong id="weather-description">Noch keine Daten.</strong>
+          <span id="location-label">Standort wird geladen ...</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel details-panel" aria-labelledby="details-title">
+      <h2 id="details-title">Details</h2>
+      <dl class="detail-grid">
+        <div>
+          <dt>Wind</dt>
+          <dd id="wind-value">-</dd>
+        </div>
+        <div>
+          <dt>Luftfeuchtigkeit</dt>
+          <dd id="humidity-value">-</dd>
+        </div>
+        <div>
+          <dt>Datenquelle</dt>
+          <dd id="source-value">Open-Meteo</dd>
+        </div>
+        <div>
+          <dt>Aktualisiert</dt>
+          <dd id="updated-value">-</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="panel temperature-chart-panel" aria-labelledby="temperature-chart-title">
+      <h2 id="temperature-chart-title">Temperaturkurve</h2>
+      <div class="temperature-chart" id="temperature-chart">
+        <p class="empty">Keine Temperaturdaten verfügbar.</p>
+      </div>
+    </section>
+
+    <section class="panel raw-panel" aria-labelledby="raw-title">
+      <details class="raw-details">
+        <summary>
+          <span id="raw-title">Rohdaten</span>
+          <span class="raw-details__hint">anzeigen</span>
+        </summary>
+        <pre id="raw-output">Noch keine Antwort.</pre>
+      </details>
+    </section>
+
+    <section class="panel map-panel" aria-labelledby="map-title">
+      <h2 id="map-title">Standortkarte</h2>
+      <div class="location-map" id="location-map">
+        <p class="empty">Keine Standortdaten verfügbar.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="weather-footer">
+    <small class="footer-copy">&copy; 2026 Tom &amp; Gina &middot; Runlevel Labs</small>
+    <small class="footer-sources">Datenquellen: Open-Meteo &middot; Kartendaten &copy; OpenStreetMap-Mitwirkende</small>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

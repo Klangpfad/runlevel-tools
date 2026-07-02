@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Runlevel Labs - IP Check</title>
+  <meta name="description" content="Statisches IP Analyse Tool für Runlevel Labs.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="ip-header">
+    <nav class="top-nav" aria-label="Navigation">
+      <a href="../index.html">Tools</a>
+      <span>IP Check</span>
+    </nav>
+    <div class="header-grid">
+      <div>
+        <p class="eyebrow">Runlevel Labs</p>
+        <h1>IP Check</h1>
+        <p class="sub">Public IP, Provider-Hinweise und Browserdaten direkt im Client.</p>
+      </div>
+      <div class="signal-panel" aria-label="API Status">
+        <span id="signal-dot" class="signal-dot" aria-hidden="true"></span>
+        <strong>Status</strong>
+        <span id="status-text">bereit</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="ip-shell">
+    <section class="panel hero-panel" aria-labelledby="public-ip-title">
+      <div class="panel-head">
+        <div>
+          <h2 id="public-ip-title">Public IP</h2>
+          <p>Wird beim Laden automatisch abgefragt.</p>
+        </div>
+        <span id="status-badge" class="badge">idle</span>
+      </div>
+
+      <output id="public-ip" class="ip-output">warte auf Daten ...</output>
+      <div class="lookup-controls" aria-label="Manuelle IP-Abfrage">
+        <input id="ip-input" name="ip" type="text" autocomplete="off" spellcheck="false" placeholder="IP eingeben (optional)">
+        <button id="ip-lookup-button" type="button">IP aufl&ouml;sen</button>
+      </div>
+      <p id="lookup-mode" class="lookup-mode">Auto Mode aktiv</p>
+    </section>
+
+    <section class="panel data-panel" aria-labelledby="network-title">
+      <h2 id="network-title">Netzwerkdaten</h2>
+      <dl class="data-grid">
+        <div>
+          <dt>ISP / Organisation</dt>
+          <dd id="isp-value">nicht verfügbar</dd>
+        </div>
+        <div>
+          <dt>Land</dt>
+          <dd id="country-value">nicht verfügbar</dd>
+        </div>
+        <div>
+          <dt>Region</dt>
+          <dd id="region-value">nicht verfügbar</dd>
+        </div>
+        <div>
+          <dt>Quelle</dt>
+          <dd id="source-value">noch keine Abfrage</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="panel browser-panel" aria-labelledby="browser-title">
+      <h2 id="browser-title">Browser Info</h2>
+      <p id="user-agent">nicht verfügbar</p>
+    </section>
+
+    <section class="panel raw-panel" aria-labelledby="raw-title">
+      <details class="raw-details">
+        <summary>
+          <span id="raw-title">Rohdaten</span>
+          <span class="raw-details__hint">anzeigen</span>
+        </summary>
+        <pre id="raw-output">Noch keine Antwort.</pre>
+      </details>
+    </section>
+  </main>
+
+  <footer class="ip-footer">
+    <small class="footer-copy">&copy; 2026 Tom &amp; Gina &middot; Runlevel Labs</small>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

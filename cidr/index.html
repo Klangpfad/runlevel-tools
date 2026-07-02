@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Runlevel Labs - CIDR Rechner</title>
+  <meta name="description" content="Statischer CIDR und Subnetz Rechner für Runlevel Labs.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="cidr-header">
+    <nav class="top-nav" aria-label="Navigation">
+      <a href="../index.html">Tools</a>
+      <span>CIDR Rechner</span>
+    </nav>
+    <div class="header-grid">
+      <div>
+        <p class="eyebrow">Runlevel Labs</p>
+        <h1>CIDR Rechner</h1>
+        <p class="sub">IPv4 Subnetze berechnen: Netzwerk, Broadcast, Hostbereich und Maske.</p>
+      </div>
+      <div class="signal-panel" aria-label="Rechner Status">
+        <span id="signal-dot" class="signal-dot" aria-hidden="true"></span>
+        <strong>Status</strong>
+        <span id="status-text">bereit</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="cidr-shell">
+    <section class="panel input-panel" aria-labelledby="input-title">
+      <div class="panel-head">
+        <div>
+          <h2 id="input-title">Subnetz Eingabe</h2>
+          <p>IPv4-Adresse und Prefix angeben. Beispiel: 192.168.1.10 /24.</p>
+        </div>
+        <span id="status-badge" class="badge">idle</span>
+      </div>
+
+      <form id="cidr-form" class="cidr-form">
+        <label>
+          <span>IP-Adresse</span>
+          <input id="ip-input" name="ip" type="text" inputmode="decimal" autocomplete="off" placeholder="192.168.1.10" value="192.168.1.10" required>
+        </label>
+
+        <label>
+          <span>CIDR Prefix</span>
+          <input id="prefix-input" name="prefix" type="number" min="0" max="32" step="1" placeholder="24" value="24" required>
+        </label>
+
+        <button type="submit">Berechnen</button>
+      </form>
+
+      <div class="quick-actions" aria-label="Beispiele">
+        <button type="button" data-ip="192.168.1.10" data-prefix="24">192.168.1.10/24</button>
+        <button type="button" data-ip="10.0.5.12" data-prefix="16">10.0.5.12/16</button>
+        <button type="button" data-ip="172.16.4.200" data-prefix="30">172.16.4.200/30</button>
+      </div>
+    </section>
+
+    <section class="panel results-panel" aria-labelledby="result-title">
+      <h2 id="result-title">Ergebnis</h2>
+      <div class="result-grid">
+        <article class="result-card">
+          <span>Netzwerkadresse</span>
+          <strong id="network-address">-</strong>
+        </article>
+        <article class="result-card">
+          <span>Broadcast-Adresse</span>
+          <strong id="broadcast-address">-</strong>
+        </article>
+        <article class="result-card">
+          <span>Erste nutzbare IP</span>
+          <strong id="first-host">-</strong>
+        </article>
+        <article class="result-card">
+          <span>Letzte nutzbare IP</span>
+          <strong id="last-host">-</strong>
+        </article>
+        <article class="result-card">
+          <span>Hosts nutzbar</span>
+          <strong id="usable-hosts">-</strong>
+        </article>
+        <article class="result-card">
+          <span>Adressen gesamt</span>
+          <strong id="total-addresses">-</strong>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel mask-panel" aria-labelledby="mask-title">
+      <h2 id="mask-title">Subnetzmaske</h2>
+      <dl class="mask-list">
+        <div>
+          <dt>Dezimal</dt>
+          <dd id="decimal-mask">-</dd>
+        </div>
+        <div>
+          <dt>Wildcard</dt>
+          <dd id="wildcard-mask">-</dd>
+        </div>
+        <div>
+          <dt>Binär</dt>
+          <dd id="binary-mask">-</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="panel detail-panel" aria-labelledby="detail-title">
+      <h2 id="detail-title">Details</h2>
+      <pre id="detail-output">Noch keine Berechnung.</pre>
+    </section>
+  </main>
+
+  <footer class="cidr-footer">
+    <small class="footer-copy">&copy; 2026 Tom &amp; Gina &middot; Runlevel Labs</small>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

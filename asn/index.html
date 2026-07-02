@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Runlevel Labs - ASN Lookup</title>
+  <meta name="description" content="Statisches ASN Lookup Tool für BGP, Prefixe und Routing-Infos.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="asn-header">
+    <nav class="top-nav" aria-label="Navigation">
+      <a href="../index.html">Tools</a>
+      <span>ASN Lookup</span>
+    </nav>
+    <div class="header-grid">
+      <div>
+        <p class="eyebrow">Runlevel Labs</p>
+        <h1>ASN Lookup</h1>
+        <p class="sub">AS-Nummer, Organisation, Prefixe und BGP-Nachbarn direkt im Browser prüfen.</p>
+      </div>
+      <div class="signal-panel" aria-label="API Status">
+        <span id="signal-dot" class="signal-dot" aria-hidden="true"></span>
+        <strong>Status</strong>
+        <span id="status-text">bereit</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="asn-shell">
+    <section class="panel query-panel" aria-labelledby="query-title">
+      <div class="panel-head">
+        <div>
+          <h2 id="query-title">AS abfragen</h2>
+          <p>Akzeptiert Eingaben wie <code>34240</code> oder <code>AS34240</code>.</p>
+        </div>
+        <span id="status-badge" class="badge">idle</span>
+      </div>
+
+      <form id="asn-form" class="asn-form">
+        <label>
+          <span>AS-Nummer</span>
+          <input id="asn-input" name="asn" type="text" inputmode="numeric" autocomplete="off" spellcheck="false" placeholder="AS34240" value="AS34240" required>
+        </label>
+        <button type="submit">ASN prüfen</button>
+      </form>
+
+      <div class="query-links" aria-labelledby="links-title">
+        <h2 id="links-title">Externe Ansichten</h2>
+        <div class="external-links" id="external-links">
+          <span class="empty">Noch keine ASN geladen.</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel summary-panel" aria-labelledby="summary-title">
+      <h2 id="summary-title">Übersicht</h2>
+      <dl class="summary-grid">
+        <div>
+          <dt>AS Number</dt>
+          <dd id="asn-number">-</dd>
+        </div>
+        <div>
+          <dt>Organisation</dt>
+          <dd id="asn-holder">-</dd>
+        </div>
+        <div>
+          <dt>Registry Block</dt>
+          <dd id="asn-block">-</dd>
+        </div>
+        <div>
+          <dt>Status</dt>
+          <dd id="asn-announced">-</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="panel metrics-panel" aria-labelledby="metrics-title">
+      <h2 id="metrics-title">BGP Daten</h2>
+      <div class="metric-grid">
+        <article class="metric-card">
+          <span>Prefixe gesamt</span>
+          <strong id="prefix-total">-</strong>
+        </article>
+        <article class="metric-card">
+          <span>IPv4 Prefixe</span>
+          <strong id="prefix-v4">-</strong>
+        </article>
+        <article class="metric-card">
+          <span>IPv6 Prefixe</span>
+          <strong id="prefix-v6">-</strong>
+        </article>
+        <article class="metric-card">
+          <span>Nachbarn</span>
+          <strong id="neighbour-total">-</strong>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel prefixes-panel" aria-labelledby="prefixes-title">
+      <h2 id="prefixes-title">Announced Prefixes</h2>
+      <ul id="prefix-list" class="record-list">
+        <li class="empty">Noch keine Daten.</li>
+      </ul>
+    </section>
+
+    <section class="panel neighbours-panel" aria-labelledby="neighbours-title">
+      <h2 id="neighbours-title">BGP Nachbarn</h2>
+      <ul id="neighbour-list" class="record-list">
+        <li class="empty">Noch keine Daten.</li>
+      </ul>
+    </section>
+
+    <section class="panel raw-panel" aria-labelledby="raw-title">
+      <details class="raw-details">
+        <summary>
+          <span id="raw-title">Rohdaten</span>
+          <span class="raw-details__hint">anzeigen</span>
+        </summary>
+        <pre id="raw-output">Noch keine Antwort.</pre>
+      </details>
+    </section>
+  </main>
+
+  <footer class="asn-footer">
+    <small class="footer-copy">&copy; 2026 Tom &amp; Gina &middot; Runlevel Labs</small>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

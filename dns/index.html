@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Runlevel Labs - DNS Tools</title>
+  <meta name="description" content="Statisches DNS Lookup Tool für Runlevel Labs.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="dns-header">
+    <nav class="top-nav" aria-label="Navigation">
+      <a href="../index.html">Tools</a>
+      <span>DNS Tools</span>
+    </nav>
+    <div class="header-grid">
+      <div>
+        <p class="eyebrow">Runlevel Labs</p>
+        <h1>DNS Tools</h1>
+        <p class="sub">Lookup für A, AAAA, CNAME, MX, TXT, NS, SOA und CAA Records.</p>
+      </div>
+      <div class="signal-panel" aria-label="Resolver Status">
+        <span class="signal-dot" aria-hidden="true"></span>
+        <strong>Resolver</strong>
+        <span>Cloudflare DNS-over-HTTPS</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="dns-shell">
+    <section class="panel query-panel" aria-labelledby="query-title">
+      <div>
+        <h2 id="query-title">Abfrage</h2>
+        <p>Domain eingeben, Record-Typ wählen und DNS-Antwort direkt im Browser abfragen.</p>
+      </div>
+
+      <form id="dns-form" class="dns-form">
+        <label>
+          <span>Domain</span>
+          <input id="domain-input" name="domain" type="text" inputmode="url" autocomplete="off" placeholder="example.com" required>
+        </label>
+
+        <label>
+          <span>Record</span>
+          <select id="record-type" name="type">
+            <option value="A">A</option>
+            <option value="AAAA">AAAA</option>
+            <option value="CNAME">CNAME</option>
+            <option value="MX">MX</option>
+            <option value="TXT">TXT</option>
+            <option value="NS">NS</option>
+            <option value="SOA">SOA</option>
+            <option value="CAA">CAA</option>
+          </select>
+        </label>
+
+        <button type="submit">Lookup starten</button>
+      </form>
+
+      <div class="quick-actions" aria-label="Schnelltests">
+        <button type="button" data-domain="klangpfad.github.io" data-type="A">klangpfad.github.io</button>
+        <button type="button" data-domain="github.io" data-type="NS">github.io NS</button>
+        <button type="button" data-domain="example.com" data-type="MX">example.com MX</button>
+      </div>
+    </section>
+
+    <section class="panel result-panel" aria-labelledby="result-title">
+      <div class="panel-head">
+        <div>
+          <h2 id="result-title">Ergebnis</h2>
+          <p id="status-text">Bereit für die erste Abfrage.</p>
+        </div>
+        <span id="rcode-badge" class="badge">idle</span>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Typ</th>
+              <th>TTL</th>
+              <th>Wert</th>
+            </tr>
+          </thead>
+          <tbody id="answers">
+            <tr>
+              <td colspan="4" class="empty">Noch keine Daten.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel detail-panel" aria-labelledby="detail-title">
+      <h2 id="detail-title">Details</h2>
+      <dl class="meta-list">
+        <div>
+          <dt>Resolver</dt>
+          <dd>cloudflare-dns.com</dd>
+        </div>
+        <div>
+          <dt>Transport</dt>
+          <dd>DNS-over-HTTPS</dd>
+        </div>
+        <div>
+          <dt>Modus</dt>
+          <dd>statisch, clientseitig</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="panel raw-panel" aria-labelledby="raw-title">
+      <details class="raw-details">
+        <summary>
+          <span id="raw-title">Rohdaten</span>
+          <span class="raw-details__hint">anzeigen</span>
+        </summary>
+        <pre id="raw-output">Noch keine Antwort.</pre>
+      </details>
+    </section>
+  </main>
+
+  <footer class="dns-footer">
+    <small class="footer-copy">&copy; 2026 Tom &amp; Gina &middot; Runlevel Labs</small>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

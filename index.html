@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Runlevel Labs - Tools</title>
+  <meta name="description" content="Statisches Runlevel Labs Dashboard für Werkzeuge und kleine technische Helfer.">
+  <link rel="stylesheet" href="style.css?v=system-map-1">
+</head>
+<body>
+  <header class="tool-header">
+    <div class="tool-header__copy">
+      <p class="eyebrow">Runlevel Labs</p>
+      <h1>Tool Dashboard</h1>
+      <p class="sub">statisch · schlicht · direkt</p>
+    </div>
+    <figure class="system-seal" aria-label="Runlevel Labs Verified System Status">
+      <img src="runlevel-labs-small.png" alt="Runlevel Labs Siegel" width="360" height="332" loading="lazy" decoding="async">
+      <figcaption>Verified System Status</figcaption>
+    </figure>
+  </header>
+
+  <main class="dashboard" aria-label="Tool-Auswahl">
+    <a class="tool-card tool-card--active" href="wetter/index.html" data-tool="wetter">
+      <span class="tool-card__icon" aria-hidden="true">🌤️</span>
+      <span class="tool-card__body">
+        <strong>Wetter</strong>
+        <span>Lokale Wetterdaten und Vorschau</span>
+        <span class="tool-card__meta"><span>Internet</span><span>Open-Meteo</span><span>OpenStreetMap</span></span>
+      </span>
+      <span class="tool-card__status">bereit</span>
+    </a>
+
+    <a class="tool-card tool-card--active" href="dns/index.html" data-tool="dns">
+      <span class="tool-card__icon" aria-hidden="true">🌐</span>
+      <span class="tool-card__body">
+        <strong>DNS Tools</strong>
+        <span>Lookup, Records und Diagnose</span>
+        <span class="tool-card__meta"><span>Internet</span><span>Cloudflare DNS</span></span>
+      </span>
+      <span class="tool-card__status">bereit</span>
+    </a>
+
+    <a class="tool-card tool-card--active" href="ip/index.html" data-tool="ip">
+      <span class="tool-card__icon" aria-hidden="true">📡</span>
+      <span class="tool-card__body">
+        <strong>IP Check</strong>
+        <span>Adresse, Netzwerk und Verbindung</span>
+        <span class="tool-card__meta"><span>Internet</span><span>ipapi/ipwho/ipify</span></span>
+      </span>
+      <span class="tool-card__status">bereit</span>
+    </a>
+   
+    <a class="tool-card tool-card--active" href="cidr/index.html" data-tool="cidr">
+      <span class="tool-card__icon" aria-hidden="true">🖩</span>
+      <span class="tool-card__body">
+        <strong>CIDR Rechner</strong>
+        <span>Netzbereiche schnell berechnen</span>
+        <span class="tool-card__meta"><span>Lokal</span><span>Offline</span><span>IPv4</span></span>
+      </span>
+      <span class="tool-card__status">bereit</span>
+    </a>
+
+    <a class="tool-card tool-card--active" href="asn/index.html" data-tool="asn">
+      <span class="tool-card__icon" aria-hidden="true">AS</span>
+      <span class="tool-card__body">
+        <strong>ASN Lookup</strong>
+        <span>AS-Nummer, Prefixe und BGP-Nachbarn</span>
+        <span class="tool-card__meta"><span>Internet</span><span>RIPEstat</span><span>BGP</span></span>
+      </span>
+      <span class="tool-card__status">bereit</span>
+    </a>
+
+    <a class="tool-card tool-card--active" href="mail/index.html" data-tool="mail">
+      <span class="tool-card__icon" aria-hidden="true">@</span>
+      <span class="tool-card__body">
+        <strong>Mail Security</strong>
+        <span>SPF, DMARC und MX Records</span>
+        <span class="tool-card__meta"><span>Internet</span><span>Google DNS</span></span>
+      </span>
+      <span class="tool-card__status">bereit</span>
+    </a>
+
+    <section class="system-map" aria-labelledby="routing-title">
+      <div class="system-map__head">
+        <h2 id="routing-title">System Map</h2>
+        <p>Übersicht aller Tools und ihrer Funktionen</p>
+      </div>
+
+      <ol class="system-map__flow" aria-label="Tool-Reihenfolge">
+        <li class="system-map__node">
+          <span class="system-map__icon" aria-hidden="true">🌤️</span>
+          <strong>Wetter</strong>
+          <span>Umwelt &amp; Daten</span>
+        </li>
+        <li class="system-map__node">
+          <span class="system-map__icon" aria-hidden="true">🌐</span>
+          <strong>DNS</strong>
+          <span>Domain / Auflösung</span>
+        </li>
+        <li class="system-map__node">
+          <span class="system-map__icon" aria-hidden="true">📡</span>
+          <strong>IP Check</strong>
+          <span>Verbindung / Identität</span>
+        </li>
+        <li class="system-map__node">
+          <span class="system-map__icon" aria-hidden="true">🖩</span>
+          <strong>CIDR</strong>
+          <span>Netzwerkstruktur</span>
+        </li>
+        <li class="system-map__node system-map__node--active">
+          <span class="system-map__icon" aria-hidden="true">AS</span>
+          <strong>ASN Lookup</strong>
+          <span>BGP / Routing</span>
+        </li>
+        <li class="system-map__node">
+          <span class="system-map__icon" aria-hidden="true">@</span>
+          <strong>Mail Security</strong>
+          <span>Security / E-Mail</span>
+        </li>
+      </ol>
+    </section>
+  </main>
+
+  <footer class="tool-footer">
+    <small class="footer-copy">&copy; 2026 Tom &amp; Gina &middot; Runlevel Labs</small>
+  </footer>
+  <script type="module" src="dashboard.js"></script>
+</body>
+</html>
