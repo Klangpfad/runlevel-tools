@@ -2,11 +2,11 @@
 
 Statische, clientseitige Tool-Sammlung von Runlevel Labs.
 
-Enthalten sind kleine Werkzeuge fuer Wetter, DNS, IP-Check, CIDR-Berechnung, ASN-Lookup und Mail-Security. Die Tools koennen direkt ueber ihre jeweilige `index.html` aufgerufen werden; der Link zur Startseite ist nur eine Navigationhilfe.
+Enthalten sind kleine Werkzeuge für Wetter, DNS, IP-Check, CIDR-Berechnung, ASN-Lookup und Mail-Security. Die Tools können direkt über ihre jeweilige `index.html` aufgerufen werden; der Link zur Startseite ist nur eine Navigationhilfe.
 
 ## Lokal starten
 
-Die Seiten nutzen JavaScript-Module. Starte sie deshalb ueber einen kleinen Webserver:
+Die Seiten nutzen JavaScript-Module. Starte sie deshalb über einen kleinen Webserver:
 
 ```powershell
 python -m http.server 8123
