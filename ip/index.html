@@ -6,6 +6,7 @@
   <title>Runlevel Labs - IP Check</title>
   <meta name="description" content="Statisches IP Analyse Tool für Runlevel Labs.">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../core/utilities.css">
 </head>
 <body>
   <header class="ip-header">
@@ -22,22 +23,26 @@
       <div class="signal-panel" aria-label="API Status">
         <span id="signal-dot" class="signal-dot" aria-hidden="true"></span>
         <strong>Status</strong>
-        <span id="status-text">bereit</span>
+        <span id="status-text" role="status" aria-live="polite" aria-atomic="true">bereit</span>
       </div>
     </div>
   </header>
 
-  <main class="ip-shell">
+  <main class="ip-shell technical-content">
     <section class="panel hero-panel" aria-labelledby="public-ip-title">
       <div class="panel-head">
         <div>
           <h2 id="public-ip-title">Public IP</h2>
           <p>Wird beim Laden automatisch abgefragt.</p>
         </div>
-        <span id="status-badge" class="badge">idle</span>
+        <span id="status-badge" class="badge" aria-hidden="true">idle</span>
       </div>
 
+      <p><strong>Hinweis:</strong> Die öffentliche oder eingegebene IP-Adresse wird an externe IP-Dienste übertragen. Es werden keine eigenen Tracking- oder Analysewerkzeuge eingesetzt.</p>
+
       <output id="public-ip" class="ip-output">warte auf Daten ...</output>
+      <button class="copy-button" type="button" data-copy-target="#public-ip">IP kopieren</button>
+      <label class="lookup-label" for="ip-input">IP-Adresse für manuelle Abfrage</label>
       <div class="lookup-controls" aria-label="Manuelle IP-Abfrage">
         <input id="ip-input" name="ip" type="text" autocomplete="off" spellcheck="false" placeholder="IP eingeben (optional)">
         <button id="ip-lookup-button" type="button">IP aufl&ouml;sen</button>
@@ -80,6 +85,7 @@
         </summary>
         <pre id="raw-output">Noch keine Antwort.</pre>
       </details>
+      <button class="copy-button" type="button" data-copy-target="#raw-output">Rohdaten kopieren</button>
     </section>
   </main>
 

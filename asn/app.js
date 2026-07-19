@@ -49,7 +49,7 @@ function setStatus(message, state = "idle") {
 
   if (state === "OK") {
     statusBadge.classList.add("ok");
-  } else if (state === "LOAD") {
+  } else if (state === "LOAD" || state === "WARN") {
     statusBadge.classList.add("warn");
     signalDot.classList.add("warn");
   } else if (state === "ERROR") {
@@ -59,7 +59,7 @@ function setStatus(message, state = "idle") {
 }
 
 function setText(element, value) {
-  element.textContent = value || "-";
+  element.textContent = value === null || value === undefined || value === "" ? "-" : String(value);
 }
 
 function resetOutput(message) {
@@ -96,7 +96,12 @@ function countPrefixes(prefixes) {
   }, { v4: 0, v6: 0 });
 }
 
-function renderPrefixes(prefixes) {
+function renderPrefixes(prefixes, error) {
+  if (error) {
+    fields.prefixList.innerHTML = `<li class="empty">Prefix-Daten nicht verfügbar: ${escapeHtml(error.message)}</li>`;
+    return;
+  }
+
   if (!prefixes.length) {
     fields.prefixList.innerHTML = '<li class="empty">Keine Prefixe gefunden.</li>';
     return;
@@ -120,7 +125,12 @@ function renderPrefixes(prefixes) {
     .join("");
 }
 
-function renderNeighbours(neighbours) {
+function renderNeighbours(neighbours, error) {
+  if (error) {
+    fields.neighbourList.innerHTML = `<li class="empty">Nachbar-Daten nicht verfügbar: ${escapeHtml(error.message)}</li>`;
+    return;
+  }
+
   if (!neighbours.length) {
     fields.neighbourList.innerHTML = '<li class="empty">Keine Nachbarn gefunden.</li>';
     return;
@@ -148,25 +158,51 @@ function renderLinks(asn) {
   `;
 }
 
-function renderResult(asn, overview, prefixesData, neighboursData) {
-  const overviewData = overview.data || {};
-  const prefixes = prefixesData.data?.prefixes || [];
-  const neighbours = neighboursData.data?.neighbours || [];
+function getSettledValue(result) {
+  return result.status === "fulfilled" ? result.value : null;
+}
+
+function getSettledError(result) {
+  return result.status === "rejected" ? result.reason : null;
+}
+
+function renderResult(asn, results) {
+  const overview = getSettledValue(results.overview);
+  const prefixesData = getSettledValue(results.prefixes);
+  const neighboursData = getSettledValue(results.neighbours);
+  const overviewError = getSettledError(results.overview);
+  const prefixesError = getSettledError(results.prefixes);
+  const neighboursError = getSettledError(results.neighbours);
+  const overviewData = overview?.data || {};
+  const prefixes = prefixesData?.data?.prefixes || [];
+  const neighbours = neighboursData?.data?.neighbours || [];
   const prefixCounts = countPrefixes(prefixes);
-  const neighbourCounts = neighboursData.data?.neighbour_counts || {};
+  const neighbourCounts = neighboursData?.data?.neighbour_counts || {};
 
   setText(fields.asnNumber, `AS${asn}`);
-  setText(fields.holder, overviewData.holder || "-");
-  setText(fields.block, overviewData.block?.resource ? `${overviewData.block.resource} · ${overviewData.block.desc || ""}` : "-");
-  setText(fields.announced, overviewData.announced ? "angekündigt" : "nicht direkt angekündigt");
-  setText(fields.prefixTotal, prefixes.length);
-  setText(fields.prefixV4, prefixCounts.v4);
-  setText(fields.prefixV6, prefixCounts.v6);
-  setText(fields.neighbourTotal, neighbourCounts.unique ?? neighbours.length);
-  renderPrefixes(prefixes);
-  renderNeighbours(neighbours);
+  setText(fields.holder, overviewError ? "nicht verfügbar" : overviewData.holder || "-");
+  setText(fields.block, overviewError
+    ? "nicht verfügbar"
+    : overviewData.block?.resource
+      ? `${overviewData.block.resource} · ${overviewData.block.desc || ""}`
+      : "-");
+  setText(fields.announced, overviewError
+    ? "nicht verfügbar"
+    : overviewData.announced
+      ? "angekündigt"
+      : "nicht direkt angekündigt");
+  setText(fields.prefixTotal, prefixesError ? "-" : prefixes.length);
+  setText(fields.prefixV4, prefixesError ? "-" : prefixCounts.v4);
+  setText(fields.prefixV6, prefixesError ? "-" : prefixCounts.v6);
+  setText(fields.neighbourTotal, neighboursError ? "-" : neighbourCounts.unique ?? neighbours.length);
+  renderPrefixes(prefixes, prefixesError);
+  renderNeighbours(neighbours, neighboursError);
   renderLinks(asn);
-  rawOutput.textContent = JSON.stringify({ overview, prefixes: prefixesData, neighbours: neighboursData }, null, 2);
+  rawOutput.textContent = JSON.stringify({
+    overview: overview || { error: overviewError?.message || "Abfrage fehlgeschlagen" },
+    prefixes: prefixesData || { error: prefixesError?.message || "Abfrage fehlgeschlagen" },
+    neighbours: neighboursData || { error: neighboursError?.message || "Abfrage fehlgeschlagen" },
+  }, null, 2);
 }
 
 async function handleLookup(event) {
@@ -176,8 +212,9 @@ async function handleLookup(event) {
   asnInput.value = asn ? `AS${asn}` : "";
 
   if (!isValidAsn(asn)) {
-    resetOutput("Bitte eine gültige AS-Nummer eingeben.");
-    setStatus("Eingabe prüfen", "ERROR");
+    const message = "Bitte eine gültige AS-Nummer eingeben.";
+    resetOutput(message);
+    setStatus(message, "ERROR");
     return;
   }
 
@@ -185,18 +222,22 @@ async function handleLookup(event) {
   setStatus(`Lade RIPEstat-Daten für AS${asn} ...`, "LOAD");
   resetOutput("Abfrage läuft ...");
 
-  try {
-    const [overview, prefixes, neighbours] = await Promise.all([
-      fetchRipestat("as-overview", asn),
-      fetchRipestat("announced-prefixes", asn),
-      fetchRipestat("asn-neighbours", asn),
-    ]);
+  const [overview, prefixes, neighbours] = await Promise.allSettled([
+    fetchRipestat("as-overview", asn),
+    fetchRipestat("announced-prefixes", asn),
+    fetchRipestat("asn-neighbours", asn),
+  ]);
+  const results = { overview, prefixes, neighbours };
+  const loadedCount = Object.values(results).filter((result) => result.status === "fulfilled").length;
 
-    renderResult(asn, overview, prefixes, neighbours);
+  renderResult(asn, results);
+
+  if (loadedCount === 3) {
     setStatus(`AS${asn} geladen`, "OK");
-  } catch (error) {
-    resetOutput(error.message);
-    setStatus("ASN-Abfrage fehlgeschlagen", "ERROR");
+  } else if (loadedCount > 0) {
+    setStatus(`${loadedCount} von 3 RIPEstat-Abfragen geladen`, "WARN");
+  } else {
+    setStatus("Keine RIPEstat-Daten verfügbar", "ERROR");
   }
 }
 

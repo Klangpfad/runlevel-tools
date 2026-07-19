@@ -198,7 +198,7 @@ async function loadIpData(ip = null) {
           null,
           2
         );
-        setStatus("keine Daten für manuelle IP", "ERROR");
+        setStatus(geoFallbackError.message || "Keine Daten für manuelle IP", "ERROR");
         return;
       }
 
@@ -217,7 +217,7 @@ async function loadIpData(ip = null) {
         setStatus("IP-Fallback geladen", "FALLBACK");
       } catch (fallbackError) {
         renderError(fallbackError);
-        setStatus("keine Daten verfügbar", "ERROR");
+        setStatus(fallbackError.message || "Keine Daten verfügbar", "ERROR");
       }
     }
   } finally {

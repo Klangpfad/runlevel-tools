@@ -4,8 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Runlevel Labs - Mail Security</title>
-  <meta name="description" content="Statisches Mail Security Analyse Tool für SPF, DKIM, DMARC und MX Records.">
+  <meta name="description" content="Statisches Mail Security Analyse Tool für MX, SPF und DMARC Records.">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../core/utilities.css">
 </head>
 <body>
   <header class="mail-header">
@@ -27,12 +28,14 @@
     </div>
   </header>
 
-  <main class="mail-shell">
+  <main class="mail-shell technical-content">
     <section class="panel query-panel" aria-labelledby="query-title">
       <div>
         <h2 id="query-title">Domain prüfen</h2>
         <p>Domain eingeben und Mail-relevante DNS Records auswerten.</p>
       </div>
+
+      <p><strong>Hinweis:</strong> Die eingegebene Domain wird für die Abfrage an Google Public DNS übertragen. Es werden keine eigenen Tracking- oder Analysewerkzeuge eingesetzt.</p>
 
       <form id="mail-form" class="mail-form">
         <label>
@@ -47,9 +50,9 @@
       <div class="panel-head">
         <div>
           <h2 id="status-title">Status</h2>
-          <p id="status-text">Bereit für die erste Abfrage.</p>
+          <p id="status-text" role="status" aria-live="polite" aria-atomic="true">Bereit für die erste Abfrage.</p>
         </div>
-        <span id="status-badge" class="badge">idle</span>
+        <span id="status-badge" class="badge" aria-hidden="true">idle</span>
       </div>
       <dl class="meta-list">
         <div>
@@ -92,6 +95,7 @@
         </summary>
         <pre id="raw-output">Noch keine Antwort.</pre>
       </details>
+      <button class="copy-button" type="button" data-copy-target="#raw-output">Rohdaten kopieren</button>
     </section>
   </main>
 

@@ -21,13 +21,7 @@ const locationMap = document.querySelector("#location-map");
 const quickActions = document.querySelectorAll("[data-location]");
 const stateKey = "weather:lastLookup";
 
-const fallbackLocation = {
-  name: "Wuppertal",
-  country: "Deutschland",
-  latitude: 51.2562,
-  longitude: 7.1508,
-  source: "Fallback-Koordinaten",
-};
+const defaultLocationName = "Wuppertal";
 
 const weatherCodes = {
   0: "Klarer Himmel",
@@ -68,7 +62,7 @@ function setStatus(message, state = "idle") {
 
   if (state === "OK") {
     statusBadge.classList.add("ok");
-  } else if (state === "FALLBACK" || state === "LOAD") {
+  } else if (state === "LOAD") {
     statusBadge.classList.add("warn");
     signalDot.classList.add("warn");
   } else if (state === "ERROR") {
@@ -275,7 +269,7 @@ function renderLocationMap(location) {
   `;
 }
 
-function renderWeather(location, weather, state) {
+function renderWeather(location, weather) {
   const current = weather.current || {};
   const description = weatherCodes[current.weather_code] || "Wettercode unbekannt";
 
@@ -288,7 +282,7 @@ function renderWeather(location, weather, state) {
   humidityValue.textContent = typeof current.relative_humidity_2m === "number"
     ? `${current.relative_humidity_2m} %`
     : "-";
-  sourceValue.textContent = state === "FALLBACK" ? location.source : "Open-Meteo";
+  sourceValue.textContent = "Open-Meteo";
   updatedValue.textContent = current.time
     ? new Intl.DateTimeFormat("de-DE", {
         dateStyle: "short",
@@ -301,10 +295,10 @@ function renderWeather(location, weather, state) {
   rawOutput.textContent = JSON.stringify({ location, weather }, null, 2);
 }
 
-function renderError(error) {
+function renderError(error, locationMessage = "Abfrage fehlgeschlagen") {
   temperature.textContent = "-- °C";
   weatherDescription.textContent = "Keine Wetterdaten verfügbar.";
-  locationLabel.textContent = "Abfrage fehlgeschlagen";
+  locationLabel.textContent = locationMessage;
   windValue.textContent = "-";
   humidityValue.textContent = "-";
   sourceValue.textContent = "-";
@@ -317,7 +311,8 @@ function renderError(error) {
 
 async function loadWeather(event) {
   event?.preventDefault();
-  const query = locationInput.value.trim() || fallbackLocation.name;
+  const query = locationInput.value.trim() || defaultLocationName;
+  locationInput.value = query;
   Kernel.state.set(stateKey, { location: query });
 
   setStatus("lade Wetterdaten ...", "LOAD");
@@ -326,26 +321,12 @@ async function loadWeather(event) {
   try {
     const location = await geocodeLocation(query);
     const weather = await fetchWeather(location);
-    renderWeather(location, weather, "OK");
+    renderWeather(location, weather);
     setStatus("Daten geladen", "OK");
-  } catch (primaryError) {
-    try {
-      const weather = await fetchWeather(fallbackLocation);
-      renderWeather(fallbackLocation, weather, "FALLBACK");
-      rawOutput.textContent = JSON.stringify(
-        {
-          fallbackLocation,
-          primaryError: primaryError.message,
-          weather,
-        },
-        null,
-        2
-      );
-      setStatus("fallback geladen", "FALLBACK");
-    } catch (fallbackError) {
-      renderError(fallbackError);
-      setStatus("keine Daten verfügbar", "ERROR");
-    }
+  } catch (error) {
+    const locationNotFound = error.message === "Ort nicht gefunden";
+    renderError(error, locationNotFound ? "Ort nicht gefunden" : "Abfrage fehlgeschlagen");
+    setStatus(locationNotFound ? "Ort nicht gefunden" : error.message || "Keine Daten verfügbar", "ERROR");
   }
 }
 

@@ -6,6 +6,7 @@
   <title>Runlevel Labs - DNS Tools</title>
   <meta name="description" content="Statisches DNS Lookup Tool für Runlevel Labs.">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../core/utilities.css">
 </head>
 <body>
   <header class="dns-header">
@@ -27,12 +28,14 @@
     </div>
   </header>
 
-  <main class="dns-shell">
+  <main class="dns-shell technical-content">
     <section class="panel query-panel" aria-labelledby="query-title">
       <div>
         <h2 id="query-title">Abfrage</h2>
         <p>Domain eingeben, Record-Typ wählen und DNS-Antwort direkt im Browser abfragen.</p>
       </div>
+
+      <p><strong>Hinweis:</strong> Domain und Record-Typ werden für die Abfrage an Cloudflare DNS übertragen. Es werden keine eigenen Tracking- oder Analysewerkzeuge eingesetzt.</p>
 
       <form id="dns-form" class="dns-form">
         <label>
@@ -68,9 +71,9 @@
       <div class="panel-head">
         <div>
           <h2 id="result-title">Ergebnis</h2>
-          <p id="status-text">Bereit für die erste Abfrage.</p>
+          <p id="status-text" role="status" aria-live="polite" aria-atomic="true">Bereit für die erste Abfrage.</p>
         </div>
-        <span id="rcode-badge" class="badge">idle</span>
+        <span id="rcode-badge" class="badge" aria-hidden="true">idle</span>
       </div>
 
       <div class="table-wrap">
@@ -118,6 +121,7 @@
         </summary>
         <pre id="raw-output">Noch keine Antwort.</pre>
       </details>
+      <button class="copy-button" type="button" data-copy-target="#raw-output">Rohdaten kopieren</button>
     </section>
   </main>
 

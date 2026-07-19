@@ -235,6 +235,13 @@ h2 {
   overflow-wrap: anywhere;
 }
 
+.lookup-label {
+  display: block;
+  margin: 0 0 6px;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
 .lookup-controls {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;

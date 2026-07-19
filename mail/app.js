@@ -73,6 +73,10 @@ function findDmarcRecord(response) {
   return getTxtRecords(response).find((record) => record.toLowerCase().includes("v=dmarc1"));
 }
 
+function isNullMxRecord(record) {
+  return /^0\s+\.$/.test(String(record?.data || "").trim());
+}
+
 async function lookup(domain, type) {
   const url = new URL("https://dns.google/resolve");
   url.searchParams.set("name", domain);
@@ -88,21 +92,35 @@ function renderMx(records) {
   }
 
   mxRecords.innerHTML = records
-    .map((record) => `<li>${escapeHtml(record.data || "-")}</li>`)
+    .map((record) => {
+      const value = escapeHtml(record.data || "-");
+      return isNullMxRecord(record)
+        ? `<li>${value} (Null-MX: Mailannahme deaktiviert)</li>`
+        : `<li>${value}</li>`;
+    })
     .join("");
 }
 
 function renderResult(domain, mxData, txtData, dmarcData) {
   const mxAnswers = getAnswers(mxData);
+  const nullMxRecords = mxAnswers.filter(isNullMxRecord);
+  const regularMxRecords = mxAnswers.filter((record) => !isNullMxRecord(record));
+  const hasNullMx = nullMxRecords.length > 0;
+  const hasRegularMx = regularMxRecords.length > 0;
   const spf = findSpfRecord(txtData);
   const dmarc = findDmarcRecord(dmarcData);
-  const checks = [mxAnswers.length > 0, Boolean(spf), Boolean(dmarc)];
-  const passed = checks.filter(Boolean).length;
-  const state = passed === checks.length ? "OK" : passed > 0 ? "WARN" : "FAIL";
+  const configurations = [hasRegularMx, Boolean(spf), Boolean(dmarc)];
+  const found = configurations.filter(Boolean).length;
 
-  mxStatus.textContent = mxAnswers.length > 0 ? "vorhanden" : "fehlt";
-  spfStatus.textContent = spf ? "vorhanden" : "fehlt";
-  dmarcStatus.textContent = dmarc ? "vorhanden" : "fehlt";
+  if (hasNullMx && hasRegularMx) {
+    mxStatus.textContent = "widersprüchlich";
+  } else if (hasNullMx) {
+    mxStatus.textContent = "Mailannahme deaktiviert";
+  } else {
+    mxStatus.textContent = hasRegularMx ? "Records vorhanden" : "keine Records";
+  }
+  spfStatus.textContent = spf ? "Konfiguration gefunden" : "nicht gefunden";
+  dmarcStatus.textContent = dmarc ? "Konfiguration gefunden" : "nicht gefunden";
   renderMx(mxAnswers);
   spfRecord.textContent = spf || "Kein SPF Record gefunden.";
   dmarcRecord.textContent = dmarc || "Kein DMARC Record gefunden.";
@@ -117,7 +135,15 @@ function renderResult(domain, mxData, txtData, dmarcData) {
     2
   );
 
-  setStatus(`${passed} von ${checks.length} Mail Security Checks erfolgreich.`, state);
+  if (hasNullMx && hasRegularMx) {
+    setStatus("Null-MX und weitere MX Records gefunden. Konfiguration prüfen.", "WARN");
+  } else if (hasNullMx) {
+    const details = `SPF: ${spf ? "gefunden" : "nicht gefunden"}, DMARC: ${dmarc ? "gefunden" : "nicht gefunden"}`;
+    setStatus(`Mailannahme durch Null-MX deaktiviert. ${details}.`, "INFO");
+  } else {
+    const state = found === configurations.length ? "OK" : found > 0 ? "WARN" : "FAIL";
+    setStatus(`${found} von ${configurations.length} Konfigurationen gefunden (MX, SPF, DMARC).`, state);
+  }
 }
 
 async function handleLookup(event) {
@@ -152,7 +178,7 @@ async function handleLookup(event) {
 
     renderResult(domain, mxData, txtData, dmarcData);
   } catch (error) {
-    setStatus("DNS-Abfrage fehlgeschlagen.", "FAIL");
+    setStatus(error.message || "DNS-Abfrage fehlgeschlagen.", "FAIL");
     mxRecords.innerHTML = '<li class="empty">Keine Daten empfangen.</li>';
     spfRecord.textContent = "Keine Daten empfangen.";
     dmarcRecord.textContent = "Keine Daten empfangen.";

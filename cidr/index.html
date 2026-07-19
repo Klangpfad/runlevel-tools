@@ -6,6 +6,7 @@
   <title>Runlevel Labs - CIDR Rechner</title>
   <meta name="description" content="Statischer CIDR und Subnetz Rechner für Runlevel Labs.">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../core/utilities.css">
 </head>
 <body>
   <header class="cidr-header">
@@ -22,19 +23,19 @@
       <div class="signal-panel" aria-label="Rechner Status">
         <span id="signal-dot" class="signal-dot" aria-hidden="true"></span>
         <strong>Status</strong>
-        <span id="status-text">bereit</span>
+        <span id="status-text" role="status" aria-live="polite" aria-atomic="true">bereit</span>
       </div>
     </div>
   </header>
 
-  <main class="cidr-shell">
+  <main class="cidr-shell technical-content">
     <section class="panel input-panel" aria-labelledby="input-title">
       <div class="panel-head">
         <div>
           <h2 id="input-title">Subnetz Eingabe</h2>
           <p>IPv4-Adresse und Prefix angeben. Beispiel: 192.168.1.10 /24.</p>
         </div>
-        <span id="status-badge" class="badge">idle</span>
+        <span id="status-badge" class="badge" aria-hidden="true">idle</span>
       </div>
 
       <form id="cidr-form" class="cidr-form">
@@ -109,6 +110,7 @@
     <section class="panel detail-panel" aria-labelledby="detail-title">
       <h2 id="detail-title">Details</h2>
       <pre id="detail-output">Noch keine Berechnung.</pre>
+      <button class="copy-button" type="button" data-copy-target="#detail-output">Ergebnis kopieren</button>
     </section>
   </main>
 

@@ -1,0 +1,54 @@
+.copy-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  margin-top: 12px;
+  padding: 0 12px;
+  color: var(--accent);
+  background: rgba(118, 199, 255, 0.08);
+  border: 1px solid rgba(118, 199, 255, 0.24);
+  border-radius: 9px;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.copy-button:hover,
+.copy-button:focus-visible {
+  color: var(--text);
+  background: rgba(118, 199, 255, 0.14);
+  border-color: rgba(118, 199, 255, 0.46);
+}
+
+.copy-button:focus-visible {
+  outline: 3px solid rgba(118, 199, 255, 0.28);
+  outline-offset: 2px;
+}
+
+.copy-button.is-copied {
+  color: var(--ok);
+  border-color: rgba(110, 231, 159, 0.42);
+}
+
+.copy-button.is-error {
+  color: var(--bad);
+  border-color: rgba(255, 123, 137, 0.42);
+}
+
+.technical-content :where(dd, output, pre, .record-value, .record-list li, .result-card strong) {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 560px) {
+  .copy-button {
+    width: 100%;
+  }
+
+  .technical-content pre {
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+}

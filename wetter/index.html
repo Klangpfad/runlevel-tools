@@ -6,6 +6,7 @@
   <title>Runlevel Labs - Wetter</title>
   <meta name="description" content="Statisches Wetter Tool für Runlevel Labs mit Open-Meteo Daten.">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../core/utilities.css">
 </head>
 <body>
   <header class="weather-header">
@@ -22,20 +23,22 @@
       <div class="signal-panel" aria-label="API Status">
         <span id="signal-dot" class="signal-dot" aria-hidden="true"></span>
         <strong>Status</strong>
-        <span id="status-text">bereit</span>
+        <span id="status-text" role="status" aria-live="polite" aria-atomic="true">bereit</span>
       </div>
     </div>
   </header>
 
-  <main class="weather-shell">
+  <main class="weather-shell technical-content">
     <section class="panel query-panel" aria-labelledby="query-title">
       <div class="panel-head">
         <div>
           <h2 id="query-title">Ort</h2>
           <p>Wetterdaten werden über Open-Meteo geladen. Kein Login, kein API-Key.</p>
         </div>
-        <span id="status-badge" class="badge">idle</span>
+        <span id="status-badge" class="badge" aria-hidden="true">idle</span>
       </div>
+
+      <p><strong>Hinweis:</strong> Der eingegebene Ort wird an Open-Meteo übertragen; die Karte lädt Inhalte von OpenStreetMap. Es werden keine eigenen Tracking- oder Analysewerkzeuge eingesetzt.</p>
 
       <form id="weather-form" class="weather-form">
         <label>

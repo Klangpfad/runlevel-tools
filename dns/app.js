@@ -132,7 +132,7 @@ async function handleLookup(event) {
     renderAnswers(records);
     rawOutput.textContent = JSON.stringify(data, null, 2);
   } catch (error) {
-    setStatus("DNS-Abfrage fehlgeschlagen.", "SERVFAIL");
+    setStatus(error.message || "DNS-Abfrage fehlgeschlagen.", "SERVFAIL");
     setEmpty("Keine Daten empfangen.");
     rawOutput.textContent = error.message;
   }

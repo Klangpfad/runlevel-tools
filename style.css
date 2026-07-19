@@ -321,19 +321,6 @@ h1 {
   font-weight: 700;
 }
 
-.system-map__node--active .system-map__icon {
-  width: 82px;
-  height: 82px;
-  margin-top: -7px;
-  color: #ffffff;
-  border-color: rgba(57, 169, 255, 0.82);
-  box-shadow:
-    0 0 0 1px rgba(57, 169, 255, 0.52),
-    0 0 0 22px rgba(57, 169, 255, 0.07),
-    0 0 34px rgba(57, 169, 255, 0.62);
-  font-size: 2rem;
-}
-
 .system-map__node strong {
   color: var(--text);
   font-size: 0.98rem;
@@ -344,10 +331,6 @@ h1 {
   color: var(--muted);
   font-size: 0.82rem;
   line-height: 1.35;
-}
-
-.system-map__node--active strong {
-  color: var(--accent);
 }
 
 .tool-footer {
